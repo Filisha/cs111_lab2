@@ -113,9 +113,25 @@ static void osprd_process_request(osprd_info_t *d, struct request *req)
 		end_request(req, 0);
 		return;
 	}
+        
+        if(req->sector < 0 || req->sector > nsectors){
+            //sector_t defined as unsigned long in linux/types.h
+            eprintk("Invalid sector requested [%lu] / [%i]\n",
+                    (unsigned long)req->sector, 
+                     nsectors);
+            end_request(req,0);
+            return;
+        }
 
 	int offset = req->sector*SECTOR_SIZE;
 	int bytes = req->current_nr_sectors*SECTOR_SIZE;
+        if(req->sector+req->current_nr_sectors > nsectors){
+            bytes = (nsectors - req->sector) * SECTOR_SIZE;
+            eprintk(
+                "Could not allocate [%u] sectors starting from sector [%lu]",
+                req->current_nr_sectors, (unsigned long)req->sector);
+            eprintk("Instead allocating [%i] sectors", (bytes/SECTOR_SIZE));
+        }
 	if (rq_data_dir(req)==READ)  //READ
 	  {
 	    memcpy(req->buffer, d->data+offset, bytes);
@@ -136,6 +152,8 @@ static void osprd_process_request(osprd_info_t *d, struct request *req)
 	// 'req->buffer' members, and the rq_data_dir() function.
 
 	// Your code here.
+        //It's above the comments
+        //#FirstWorldAnarchists
 
 	end_request(req, 1);
 }
