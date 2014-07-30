@@ -112,6 +112,19 @@ static void osprd_process_request(osprd_info_t *d, struct request *req)
 		return;
 	}
 
+	int offset = req->sector*SECTOR_SIZE;
+	int bytes = req->current_nr_sectors*SECTOR_SIZE;
+	if (rq_data_dir(req)==READ)  //READ
+	  {
+	    memcpy(req->buffer, d->data+offset, bytes);
+	  }
+	else if (rq_data_dir(req)==WRITE)
+	  {
+	    memcpy(d->data+offset, req->buffer, bytes);
+	  }
+	else
+	  eprintk("Cannot read or write\n");
+
 	// EXERCISE: Perform the read or write request by copying data between
 	// our data array and the request's buffer.
 	// Hint: The 'struct request' argument tells you what kind of request
@@ -121,7 +134,6 @@ static void osprd_process_request(osprd_info_t *d, struct request *req)
 	// 'req->buffer' members, and the rq_data_dir() function.
 
 	// Your code here.
-	eprintk("Should process request...\n");
 
 	end_request(req, 1);
 }
