@@ -65,6 +65,9 @@ typedef struct osprd_info {
 
     /* HINT: You may want to add additional fields to help
              in detecting deadlock. */
+    
+    unsigned num_read_locks;
+    unsigned num_write_locks;
 
     // The following elements are used internally; you don't need
     // to understand them.
@@ -305,6 +308,8 @@ static void osprd_setup(osprd_info_t *d) {
     osp_spin_lock_init(&d->mutex);
     d->ticket_head = d->ticket_tail = 0;
     /* Add code here if you add fields to osprd_info_t. */
+    d->num_read_locks = 0;
+    d->num_write_locs = 0;
 }
 
 
