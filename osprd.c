@@ -16,6 +16,8 @@
 
 #include "spinlock.h"
 #include "osprd.h"
+#include "linkedlist.h"
+#include "pidqueue.h"
 
 /* The size of an OSPRD sector. */
 #define SECTOR_SIZE	512
