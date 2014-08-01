@@ -433,23 +433,22 @@ int osprd_ioctl(struct inode *inode, struct file *filp,
         // Your code here (instead of the next two lines).
         r = try_acquire_file_lock(filp);
         r = (r == -EDEADLK ? -EBUSY : r); //If deadlock,set it to busy instead
-    }
 
-} else if (cmd == OSPRDIOCRELEASE) {
+    } else if (cmd == OSPRDIOCRELEASE) {
 
-    // EXERCISE: Unlock the ramdisk.
-    //
-    // If the file hasn't locked the ramdisk, return -EINVAL.
-    // Otherwise, clear the lock from filp->f_flags, wake up
-    // the wait queue, perform any additional accounting steps
-    // you need, and return 0.
+        // EXERCISE: Unlock the ramdisk.
+        //
+        // If the file hasn't locked the ramdisk, return -EINVAL.
+        // Otherwise, clear the lock from filp->f_flags, wake up
+        // the wait queue, perform any additional accounting steps
+        // you need, and return 0.
 
-    // Your code here (instead of the next line).
-    r = release_file_lock(filp);
+        // Your code here (instead of the next line).
+        r = release_file_lock(filp);
 
-} else
-    r = -ENOTTY; /* unknown command */
-return r;
+    } else
+        r = -ENOTTY; /* unknown command */
+    return r;
 }
 
 
@@ -463,6 +462,9 @@ static void osprd_setup(osprd_info_t *d) {
     /* Add code here if you add fields to osprd_info_t. */
     d->num_read_locks = 0;
     d->num_write_locs = 0;
+    
+    d->lock_holder_l = NULL;
+    d->lock_waiter_l = NULL;
 }
 
 
