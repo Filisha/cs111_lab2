@@ -20,3 +20,5 @@ Email: defoster22@ucla.edu
 
 
 # Add any other information you'd like us to have below this line.
+
+We were unable to get our lab to run on QEMU. We are sure our algorithm works, we just ran into a few errors we let slip by at the end, most notably noticing that we did not include the additonal header files that we needed to since we used them. We noticed this in the 11th hour (literally), and after adding them it was too late to fix the other bugs that ensued.

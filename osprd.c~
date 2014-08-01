@@ -258,7 +258,7 @@ static int current_has_lock_on_disk(int d_id) {
     osprd_info_t *d = &osprds[d_id];
 
     spin_lock(&d->mutex);
-    result = list_contains(d_lock_holder_l, current->pid);      //d_lock_holder_l uninit
+    result = list_contains(d_lock_holder_l, current->pid);
     spin_unlock(&d->mutex);
 
     return result ? 1 : 0; //Don't actually return the pointer!
@@ -282,7 +282,7 @@ static int find_drive_id_for_waiter(pid_t p) {
 
 static int check_deadlock(osprd_info_t *d) {
     pid_queue_t *q;
-    int i, d_id = drive_id_from_info(d);     //incompatible type for arg
+    int i, d_id = drive_id_from_info(d);
     int ret = 0;
     pid_t pid = -1;
 
@@ -461,7 +461,7 @@ static void osprd_setup(osprd_info_t *d) {
     d->ticket_head = d->ticket_tail = 0;
     /* Add code here if you add fields to osprd_info_t. */
     d->num_read_locks = 0;
-    d->num_write_locks = 0;
+    d->num_write_locs = 0;
     
     d->lock_holder_l = NULL;
     d->lock_waiter_l = NULL;
